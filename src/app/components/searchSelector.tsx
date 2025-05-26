@@ -15,7 +15,7 @@ function SearchSelectorComponent({
 	const { locations, loading, findLocation } = useLocations();
 	const [inputValue, setValue] = useState("");
 	const [showSelector, setShowSelector] = useState(false);
-	const timeoutRef = useRef<number | null>(null);
+	const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 	const divRef = useRef<HTMLDivElement>(null);
 
 	const searchLocation = (e: any) => {
