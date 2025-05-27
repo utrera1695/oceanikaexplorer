@@ -29,7 +29,7 @@ function CargoSelector({
 			{fields.map((field, index) => (
 				<>
 					<div key={field.id} className='containerSelector'>
-						{searchType === "maritimo" && maritimeType === "FCL" ? (
+						{searchType === "Marítimo" && maritimeType === "FCL" ? (
 							<div style={{ display: "flex", width: "100%" }}>
 								<div className='form-input full' style={{ width: "100%" }}>
 									<label htmlFor=''>Tipo de contenedor</label>
@@ -187,7 +187,7 @@ function CargoSelector({
 				</button>
 			</div>
 
-			{searchType === "aereo" && (
+			{searchType === "Aéreo" && (
 				<div className='form-group'>
 					<div className='form-input full'>
 						<label htmlFor=''>fecha de preparación de la carga</label>

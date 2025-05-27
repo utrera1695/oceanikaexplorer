@@ -84,7 +84,7 @@ function SearchSelectorComponent({
 				<div className='selector' ref={divRef}>
 					{!loading ? (
 						<div>
-							{searchType === "maritimo" && (
+							{searchType === "Marítimo" && (
 								<>
 									<p className='list-container'>Puertos maritimos</p>
 									<ul>

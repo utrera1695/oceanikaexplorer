@@ -5,10 +5,13 @@ import Modal from "./app/components/modalComponent";
 
 import PhoneInput from "react-phone-number-input";
 import { Controller, useForm } from "react-hook-form";
+import moment from "moment";
+import { ToastContainer, toast } from "react-toastify";
+
 import "react-phone-number-input/style.css";
 
 function App() {
-	const [searchType, setSearchType] = useState("maritimo");
+	const [searchType, setSearchType] = useState("Marítimo");
 
 	const [originSelected, setOriginSelected] = useState<any | null>(null);
 	const [destinationSelected, setDestinationSelected] = useState<any | null>(
@@ -20,6 +23,7 @@ function App() {
 		control,
 		register,
 		handleSubmit,
+		reset,
 		formState: { errors },
 	} = useForm({
 		defaultValues: {
@@ -46,7 +50,53 @@ function App() {
 	const openModal = () => setIsOpen(true);
 	const closeModal = () => setIsOpen(false);
 
-	const onSubmit = (data: any) => console.log(data);
+	const onSubmit = (data: any) => {
+		const body = {
+			origin: originSelected,
+			destination: destinationSelected,
+			cargos: data.cargos,
+			fullname: data.fullname,
+			companyname: data.companyname,
+			email: data.email,
+			phone: data.phone,
+			date: moment(data.date).format("DD-MM-YYYY"),
+			requestDate: moment(new Date()).format("DD-MM-YYYY HH:mm:ss"),
+			searchType,
+			maritimeType,
+		};
+		console.log(body);
+		fetch("https://oceanikaexplorer-api.onrender.com/send-email", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(body),
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				if (data.success) {
+					reset();
+					setOriginSelected(null);
+					setDestinationSelected(null);
+					closeModal();
+					toast("Solicitud enviada!", {
+						position: "top-center",
+						autoClose: 5000,
+						hideProgressBar: true,
+						closeOnClick: true,
+						pauseOnHover: false,
+						draggable: false,
+						progress: undefined,
+						theme: "light",
+					});
+				} else {
+					alert("Error al enviar el correo: " + data.error);
+				}
+			})
+			.catch((error) => {
+				console.error("Error en la solicitud:", error);
+			});
+	};
 
 	const isDisabled = () => {
 		if (!originSelected?.country || !destinationSelected?.country) return true;
@@ -66,33 +116,33 @@ function App() {
 			<div className='buttonSelector'>
 				<button
 					className={`${
-						searchType === "maritimo" && maritimeType === "FCL"
+						searchType === "Marítimo" && maritimeType === "FCL"
 							? "isActive"
 							: ""
 					}`}
 					onClick={() => {
 						setMaritimeType("FCL");
-						setSearchType("maritimo");
+						setSearchType("Marítimo");
 					}}
 				>
 					Marítimo FCL
 				</button>
 				<button
 					className={`${
-						searchType === "maritimo" && maritimeType === "LCL"
+						searchType === "Marítimo" && maritimeType === "LCL"
 							? "isActive"
 							: ""
 					}`}
 					onClick={() => {
 						setMaritimeType("LCL");
-						setSearchType("maritimo");
+						setSearchType("Marítimo");
 					}}
 				>
 					Marítimo LCL
 				</button>
 				<button
-					className={`${searchType === "aereo" ? "isActive" : ""} `}
-					onClick={() => setSearchType("aereo")}
+					className={`${searchType === "Aéreo" ? "isActive" : ""} `}
+					onClick={() => setSearchType("Aéreo")}
 				>
 					Carga Aerea
 				</button>
@@ -215,6 +265,7 @@ function App() {
 					</button>
 				</form>
 			</Modal>
+			<ToastContainer />
 		</div>
 	);
 }

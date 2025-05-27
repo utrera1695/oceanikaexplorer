@@ -24,7 +24,7 @@ export function useLocations() {
 		try {
 			setTimeout(async () => {
 				let result = [];
-				if (query.searchType === "maritimo")
+				if (query.searchType === "Marítimo")
 					result = await locationService.getMaritimeLocations(
 						query.term,
 						query.type
