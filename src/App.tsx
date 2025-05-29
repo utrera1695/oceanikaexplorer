@@ -183,7 +183,7 @@ function App() {
 				</button>
 			</div>
 			<Modal isOpen={isOpen} onClose={closeModal}>
-				<p>Completa tus datos para poder tener un calculo de tu envio</p>
+				<p>Completa tus datos para poder tener un cálculo de tu envío</p>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<div className='modal-form'>
 						<div className='form-input'>
