@@ -19,6 +19,7 @@ function App() {
 	);
 	const [maritimeType, setMaritimeType] = useState("FCL");
 	const [isOpen, setIsOpen] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const {
 		control,
 		register,
@@ -51,6 +52,7 @@ function App() {
 	const closeModal = () => setIsOpen(false);
 
 	const onSubmit = (data: any) => {
+		setLoading(true);
 		const body = {
 			origin: originSelected,
 			destination: destinationSelected,
@@ -92,9 +94,11 @@ function App() {
 				} else {
 					alert("Error al enviar el correo: " + data.error);
 				}
+				setLoading(false);
 			})
 			.catch((error) => {
 				console.error("Error en la solicitud:", error);
+				setLoading(false);
 			});
 	};
 
@@ -260,8 +264,12 @@ function App() {
 						)}
 					</div>
 
-					<button type='submit' className='searchButton'>
-						Enviar solicitud
+					<button type='submit' className='searchButton' disabled={loading}>
+						{loading ? (
+							<i className='fa fa-spinner fa-spin'></i>
+						) : (
+							<span>Enviar solicitud</span>
+						)}
 					</button>
 				</form>
 			</Modal>
